@@ -1,6 +1,7 @@
 from base64 import decode
 from functools import cache
 from posixpath import split
+import os
 import random, math
 import time
 import subprocess
@@ -10,17 +11,33 @@ from pkg_resources import split_sections
 import geocoder
 import scapy.all as scapy
 import re
+import threading
 
+
+os.system('cls')
+aninames = ['/','-', "\ ", '|']
+aniframes = 0 
+
+
+for i in range(12):
+        if aniframes == 4:
+                aniframes = 0
+        print("...", aninames[aniframes])
+        time.sleep(0.1)
+        aniframes = aniframes + 1
+        os.system('cls')
+
+
+time.sleep(0.5)
 lineskip = ("-----------------------------")
-
-print("\n")
-print("""
+print(lineskip, """
      ___   _      _   _   _            _    
     / / \ | | ___| |_| | | | __ _  ___| | __
    / /|  \| |/ _ \ __| |_| |/ _` |/ __| |/ /
   / / | |\  |  __/ |_|  _  | (_| | (__|   < 
  /_/  |_| \_|\___|\__|_| |_|\__,_|\___|_|\_\
 """)
+print(lineskip)
 print("Version 1.7")
 print("Copyright 2021-2022, OjanRN/M3D4NG")
 print("\n")
@@ -36,14 +53,14 @@ def start():
             print(lineskip)
             print("Main Commands")
             print(lineskip)
-            print(f"getprofiles = Scan the network profiles on the current pc")
-            print(f"getkey = View the password/key of the network profile")
-            print(f"getipcmd = Get current host's IPv4 Address from ipconfig in cmd")
-            print(f"locateme = Get current host's IP Address")
-            print(f"locateip = Locate an IP Adress")
+            print(f"get profiles = Scan the network profiles on the current pc")
+            print(f"get key = View the password/key of the network profile")
+            print(f"get ipc = Get current host's IPv4 Address from ipconfig in cmd")
+            print(f"get ipw = Get the IP Adress of a WWW link(example:google.com)")
+            print(f"locate me = Get current host's IP Address")
+            print(f"locate ip = Locate an IP Adress")
             print(f"connect = Connect to a wifi by using a registered profile")
             print(f"dconnect = Disconnect current connected wifi")
-            print(f"getipw = Get the IP Adress of a WWW link(example:google.com)")
             print(lineskip)
             print("Red Zone:")
             print(f"WARNING!,use these command at your own risk")
@@ -52,22 +69,23 @@ def start():
             print(f"ping = Ping/Send package to an IP Adress")
             print(f"getlocalsip = Get IP Adress of your local network")
             print(lineskip)
-            print("Other Commands")
+            print("Program Commands")
             print(lineskip)
             print(f"/matrix = Create a hacker style matrix of one and zeros")
             print(f"/credits = Credits")
             print(f"/exit = Exit the program")
             print(f"/h = List commands")
+            print(f"/clear = Clears the command line")
             print("\n")
             continue
-        elif usercm1 == "getprofiles":
+        elif usercm1 == "get profiles":
             p1 = subprocess.check_output(['netsh', 'wlan', 'show', 'profile'], shell=True).decode('utf=8').split('\n')
             p1 = [i.split(":")[1][1:-1] for i in p1 if "All User Profile" in i]
             print("\n")
             print("Profiles Available:", p1)
             print("\n")
             continue
-        elif usercm1 == "getkey":
+        elif usercm1 == "get key":
                 print("\n")
                 print("|")
                 netName = input("L@-")
@@ -91,7 +109,7 @@ def start():
                 print(dcncommand.stdout)
                 print("Disconnected this pc from wifi")
                 continue
-        elif usercm1 == "getipcmd":
+        elif usercm1 == "get ipc":
                 print("\n")
                 ipcommand = subprocess.check_output(['ipconfig']).decode('utf-8').split("\n")
                 ipcommand = [i.split(":")[1][1:-1] for i in ipcommand if "IPv4 Address. . . . . . . . . . ." in i]
@@ -112,7 +130,7 @@ def start():
                 print(pingcommand.stdout)
                 print("Pinging")
                 continue
-        elif usercm1 =="changehostpass":
+        elif usercm1 =="changepass":
                 print("\n")
                 print("|")
                 userinp = input("L@-")
@@ -120,7 +138,7 @@ def start():
                 netusercmd = subprocess.run(['net', 'user', userinp, passinp ])
                 print(netusercmd)
                 continue
-        elif usercm1 == "getipw":
+        elif usercm1 == "get ipw":
                 print("\n")
                 print("|")
                 nspinp = input("L@-")
@@ -138,7 +156,7 @@ def start():
                                         print(f"{ip_add_range_entered} is a valid ip address range")
                                         arp_result = scapy.arping(ip_add_range_entered)
                                         break
-        elif usercm1 == "locateme":
+        elif usercm1 == "locate me":
                 print("\n")
                 ip = geocoder.ip("me")
                 print(lineskip)
@@ -146,7 +164,7 @@ def start():
                 print(ip)
                 print(lineskip)
                 continue
-        elif usercm1 == "locateip":
+        elif usercm1 == "locate ip":
                 print("\n")
                 print("|")
                 location = input("L@-")
@@ -181,6 +199,20 @@ def start():
                 print("https://github.com/OjanRN")
                 print(lineskip)
                 print("\n")
+        elif usercm1 == "/clear":
+                os.system('cls')
+                print(lineskip, """
+     ___   _      _   _   _            _    
+    / / \ | | ___| |_| | | | __ _  ___| | __
+   / /|  \| |/ _ \ __| |_| |/ _` |/ __| |/ /
+  / / | |\  |  __/ |_|  _  | (_| | (__|   < 
+ /_/  |_| \_|\___|\__|_| |_|\__,_|\___|_|\_\
+                """)
+                print(lineskip)
+                print("Version 1.7")
+                print("Copyright 2021-2022, OjanRN/M3D4NG")
+                print("\n")
+                continue
         elif usercm1 == "/exit":
                 print("exiting program...")
                 break #
